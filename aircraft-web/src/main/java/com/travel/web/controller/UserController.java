@@ -42,29 +42,19 @@ public class UserController {
 
     /**
      * 注册网站
-     * @param userName
+     * @param loginName
      * @param passWord
      * @param salt
      * @return
      */
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     @ResponseBody
-    public ResultGeekQ<String> register(@RequestParam("username") String userName ,
+    public ResultGeekQ<String> register(@RequestParam("loginName") String loginName ,
                                         @RequestParam("password") String passWord,
-                                        @RequestParam("verifyCode") String verifyCode,
                                         @RequestParam("salt") String salt, HttpServletResponse response ){
 
         ResultGeekQ<String> result = ResultGeekQ.build();
-        /**
-         * 校验验证码
-         */
-        boolean check = miaoshaService.checkVerifyCodeRegister(Integer.valueOf(verifyCode));
-        if(!check){
-            result.withError(ResultStatus.CODE_FAIL.getCode(),ResultStatus.CODE_FAIL.getMessage());
-            return result;
-
-        }
-        boolean registerInfo  = miaoShaUserService.register(response , userName,passWord,salt);
+        boolean registerInfo  = miaoShaUserService.register(response , loginName,passWord,salt);
         if(!registerInfo){
             result.withError(ResultStatus.RESIGETER_FAIL.getCode(),ResultStatus.RESIGETER_FAIL.getMessage());
             return result;

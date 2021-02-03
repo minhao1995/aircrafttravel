@@ -103,7 +103,6 @@ public class GoodsController extends BaseController {
         model.addAttribute("user", user);
         ResultGeekQ<List<GoodsVo>> goodsR = goodsService.goodsVoList();
         if(!ResultGeekQ.isSuccess(goodsR)){
-            //todo 如何处理
             return null;
         }
 

@@ -27,6 +27,7 @@ public class GlobleExceptionHandler {
         log.error("======== 拦截到异常请注意！==========");
         e.printStackTrace();
         ResultGeekQ resultGeekQ = ResultGeekQ.build();
+        resultGeekQ.setCode(ResultStatus.FAILD.getCode());
         if(e instanceof BindException){
             BindException ex = (BindException)e;
             List<ObjectError> errorList = ex.getAllErrors();
