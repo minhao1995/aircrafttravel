@@ -48,6 +48,7 @@ public class MiaoShaServiceImpl implements MiaoshaService {
     @Autowired
     RedisClient redisClient;
 
+
     @Autowired
     private MiaoShaLogic mSLogic;
 
@@ -200,5 +201,15 @@ public class MiaoShaServiceImpl implements MiaoshaService {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean checkVerifyCodeRegister(int verifyCode) {
+        Integer codeOld = (Integer) redisClient.get(MiaoshaKey.getMiaoshaVerifyCodeRegister,"regitser", Integer.class);
+        if(codeOld == null || codeOld - verifyCode != 0 ) {
+            return false;
+        }
+        redisClient.delete(MiaoshaKey.getMiaoshaVerifyCode, "regitser");
+        return true;
     }
 }

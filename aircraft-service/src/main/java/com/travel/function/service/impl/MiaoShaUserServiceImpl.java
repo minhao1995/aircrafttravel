@@ -3,11 +3,13 @@ package com.travel.function.service.impl;
 import com.travel.commons.enums.ResultStatus;
 import com.travel.commons.resultbean.ResultGeekQ;
 import com.travel.commons.utils.MD5Util;
+import com.travel.commons.utils.MD5Utils;
 import com.travel.commons.utils.UUIDUtil;
 import com.travel.function.dao.MiaoShaUserDao;
 import com.travel.function.entity.MiaoShaUser;
 import com.travel.function.logic.MiaoShaLogic;
 import com.travel.function.redisManager.RedisClient;
+import com.travel.function.redisManager.keysbean.MiaoShaUserKey;
 import com.travel.service.MiaoShaUserService;
 import com.travel.vo.LoginVo;
 import com.travel.vo.MiaoShaUserVo;
@@ -16,7 +18,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+
+import static com.travel.commons.enums.CustomerConstant.COOKIE_NAME_TOKEN;
 
 /**
  * @auther 邱润泽 bullock
@@ -32,6 +38,9 @@ public class MiaoShaUserServiceImpl implements MiaoShaUserService {
 
     @Autowired
     private MiaoShaLogic mSLogic ;
+
+    @Autowired
+    private RedisClient redisClient;
 
 
     @Override
@@ -106,23 +115,38 @@ public class MiaoShaUserServiceImpl implements MiaoShaUserService {
 
 
 
-//    // http://blog.csdn.net/tTU1EvLDeLFq5btqiK/article/details/78693323
-//    public boolean updatePassword(String token, String nickName, String formPass) {
-//        //取user
-//        MiaoShaUser user = getByName(nickName);
-//        if(user == null) {
-//            throw new GlobleException(MOBILE_NOT_EXIST);
-//        }
-//        //更新数据库
-//        MiaoShaUser toBeUpdate = new MiaoShaUser();
-//        toBeUpdate.setNickname(nickName);
-//        toBeUpdate.setPassword(MD5Util.formPassToDBPass(formPass, user.getSalt()));
-//        miaoShaUserDao.updateByPrimaryKeySelective(toBeUpdate);
-//        //处理缓存
-//        redisClient.delete(MiaoShaUserKey.getByNickName, ""+nickName);
-//        user.setPassword(toBeUpdate.getPassword());
-//        redisClient.set(MiaoShaUserKey.token, token, user);
-//        return true;
-//    }
 
+    @Override
+    public boolean register(HttpServletResponse response, String userName, String passWord, String salt) {
+        MiaoShaUser miaoShaUser =  new MiaoShaUser();
+        miaoShaUser.setNickname(userName);
+        String DBPassWord =  MD5Utils.formPassToDBPass(passWord , salt);
+        miaoShaUser.setPassword(DBPassWord);
+        miaoShaUser.setRegisterDate(new Date());
+        miaoShaUser.setSalt(salt);
+        miaoShaUser.setNickname(userName);
+        try {
+            miaoShaUserDao.insertSelective(miaoShaUser);
+            MiaoShaUser user = miaoShaUserDao.getByName(miaoShaUser.getNickname());
+            if(user == null){
+                return false;
+            }
+            //生成cookie 将session返回游览器 分布式session
+            String token= UUIDUtil.getUUid();
+            addCookie(response, token, user);
+        } catch (Exception e) {
+            log.error("注册失败",e);
+            return false;
+        }
+        return true;
+    }
+
+    private void addCookie(HttpServletResponse response, String token, MiaoShaUser user) {
+        redisClient.set(MiaoShaUserKey.token, token, user);
+        Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
+        //设置有效期
+        cookie.setMaxAge(MiaoShaUserKey.token.expireSeconds());
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
 }

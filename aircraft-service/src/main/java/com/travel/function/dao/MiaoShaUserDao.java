@@ -17,4 +17,5 @@ public interface MiaoShaUserDao {
 
     MiaoShaUser getByName(String name);
 
+
 }

@@ -24,4 +24,6 @@ public interface MiaoshaService {
 
     public ResultGeekQ<Boolean> checkPath(MiaoShaUserVo user, long goodsId, String path);
 
+    boolean checkVerifyCodeRegister(int verifyCode);
+
 }

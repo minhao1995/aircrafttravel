@@ -11,6 +11,7 @@ import com.travel.service.MiaoShaUserService;
 import com.travel.vo.GoodsDetailVo;
 import com.travel.vo.GoodsVo;
 import com.travel.vo.MiaoShaUserVo;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -34,6 +35,7 @@ import static com.travel.commons.enums.CustomerConstant.MiaoShaStatus.MIAO_SHA_N
 @Controller
 @RequestMapping("/goods")
 @Slf4j
+@Api
 public class GoodsController extends BaseController {
 
     @Autowired

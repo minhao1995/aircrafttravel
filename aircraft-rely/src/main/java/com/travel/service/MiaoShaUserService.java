@@ -17,4 +17,6 @@ public interface MiaoShaUserService {
     public ResultGeekQ<String> login(HttpServletResponse response, LoginVo loginVo);
 
     ResultGeekQ<MiaoShaUserVo> getByName(String name);
+
+    boolean register(HttpServletResponse response , String userName , String passWord , String salt);
 }
