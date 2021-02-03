@@ -8,5 +8,5 @@ server:
 
 
 zookeeper:
-  address: 127.0.0.1:2181
+  address: 172.23.20.254:2181
   timeout: 200000
