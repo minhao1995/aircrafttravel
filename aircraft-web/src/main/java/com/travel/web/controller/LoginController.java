@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -41,7 +38,7 @@ public class LoginController {
 
     @PostMapping("/do_login")
     @ResponseBody
-    public ResultGeekQ<String> tologin(@Valid LoginVo loginVo, HttpServletResponse response) {
+    public ResultGeekQ<String> tologin(@Valid @RequestBody  LoginVo loginVo, HttpServletResponse response) {
         log.info("登录开始 start! loginvo:{}", JSON.toJSON(loginVo));
         ResultGeekQ resultGeekQ = ResultGeekQ.build();
         try {

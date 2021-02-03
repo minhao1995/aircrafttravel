@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class LoginVo {
     @NotNull
-    @CheckMobile
+//    @CheckMobile
     private String mobile ;
 
     @NotNull
