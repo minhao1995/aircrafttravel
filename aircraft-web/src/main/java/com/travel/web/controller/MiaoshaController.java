@@ -125,7 +125,13 @@ public class MiaoshaController {
         }
     }
 
-
+    /**
+     * 秒杀核心方法
+     * @param user
+     * @param path
+     * @param goodsId
+     * @return
+     */
     @UserCheckAndLimit(seconds = 5, maxCount = 5, needLogin = true)
     @RequestMapping(value = "/{path}/confirm", method = RequestMethod.POST)
     @ResponseBody
@@ -151,7 +157,7 @@ public class MiaoshaController {
                 result.withError(MIAOSHA_LOCAL_GOODS_NO.getCode(), MIAOSHA_LOCAL_GOODS_NO.getMessage());
                 return result;
             }
-           //*********************getMiaoshaPath***********设置排队标记，超时时间根据业务情况决定，类似分布式锁 返回排队中   ************************
+           //*********************getMiaoshaPath***********设置排队标记，超时时间根据业务情况决定，类似回分布式锁 返排队中   ************************
             String redisK =  CommonMethod.getMiaoshaOrderWaitFlagRedisKey(String.valueOf(user.getId()), String.valueOf(goodsId));
             if (!redisService.set(redisK,String.valueOf(goodsId), "NX", "EX", 120)) {
                 result.withError(MIAOSHA_QUEUE_ING.getCode(), MIAOSHA_QUEUE_ING.getMessage());
