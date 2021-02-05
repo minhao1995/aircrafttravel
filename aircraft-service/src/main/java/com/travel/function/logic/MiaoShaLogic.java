@@ -17,24 +17,24 @@ public interface MiaoShaLogic {
 
     OrderInfo createOrder(MiaoShaUser user, GoodsVo goods);
 
-    public int insertMiaoshaOrder(MiaoShaOrder miaoshaOrder);
+    int insertMiaoshaOrder(MiaoShaOrder miaoshaOrder);
 
-    public MiaoShaOrder getMiaoshaOrderByUserIdGoodsId(Long userId, Long goodsId);
+    MiaoShaOrder getMiaoshaOrderByUserIdGoodsId(Long userId, Long goodsId);
 
     // check 生成的验证码路径
     boolean checkPath(MiaoShaUser user, long goodsId, String path);
 
 
-    public List<MiaoShaOrder> listByGoodsId(Long goodsId);
+    List<MiaoShaOrder> listByGoodsId(Long goodsId);
 
-    public MiaoShaUser getById(Long id);
+    MiaoShaUser getById(Long id);
 
-    public HttpServletResponse addCookie(HttpServletResponse response, String token, MiaoShaUser user);
+    HttpServletResponse addCookie(HttpServletResponse response, String token, MiaoShaUser user);
 
     Long insertSelective(OrderInfo record);
 
-    public OrderInfo getOrderById(Long orderId);
+    OrderInfo getOrderById(Long orderId);
 
-    public MiaoShaUser getByToken(HttpServletResponse response , String token);
+    MiaoShaUser getByToken(HttpServletResponse response , String token);
 
 }
