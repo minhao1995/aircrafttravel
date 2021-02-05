@@ -12,17 +12,17 @@ import com.travel.vo.OrderInfoVo;
  */
 public interface MiaoshaService {
 
-    public ResultGeekQ<OrderInfoVo> miaosha(MiaoShaUserVo user, GoodsVo goods);
+    ResultGeekQ<OrderInfoVo> miaosha(MiaoShaUserVo user, GoodsVo goods);
 
-    public ResultGeekQ<Integer> insertMiaoshaOrder(MiaoShaOrderVo miaoshaOrder);
+    ResultGeekQ<Integer> insertMiaoshaOrder(MiaoShaOrderVo miaoshaOrder);
 
-    public ResultGeekQ<MiaoShaOrderVo> getMiaoshaOrderByUserIdGoodsId(Long userId, Long goodsId);
+    ResultGeekQ<MiaoShaOrderVo> getMiaoshaOrderByUserIdGoodsId(Long userId, Long goodsId);
 
-    public ResultGeekQ<String> createMiaoshaPath(MiaoShaUserVo user, Long goodsId);
+    ResultGeekQ<String> createMiaoshaPath(MiaoShaUserVo user, Long goodsId);
 
-    public ResultGeekQ<Long> getMiaoshaResult(Long userId, Long goodsId);
+    ResultGeekQ<Long> getMiaoshaResult(Long userId, Long goodsId);
 
-    public ResultGeekQ<Boolean> checkPath(MiaoShaUserVo user, long goodsId, String path);
+    ResultGeekQ<Boolean> checkPath(MiaoShaUserVo user, long goodsId, String path);
 
     boolean checkVerifyCodeRegister(int verifyCode);
 
