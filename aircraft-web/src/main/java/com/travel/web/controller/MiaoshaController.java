@@ -101,14 +101,14 @@ public class MiaoshaController {
                 return result;
             }
 
-            String redisK =  CommonMethod.getMiaoshaOrderWaitFlagRedisKey(String.valueOf(user.getNickname()), String.valueOf(goodsId));
+            String redisK =  CommonMethod.getMiaoshaOrderWaitFlagRedisKey(String.valueOf(user.getId()), String.valueOf(goodsId));
             //判断redis里的排队标记，排队标记不为空返回还在排队中
             //一定要先判断排队标记再判断是否已生成订单，不然又会存在并发的时间差问题
             if (redisService.get(redisK+String.valueOf(goodsId),String.class)!=null) {
                 result.withError(MIAOSHA_QUEUE_ING.getCode(),MIAOSHA_QUEUE_ING.getMessage());
                 return result;
             }
-            String redisMr = CommonMethod.getMiaoshaOrderRedisKey(String.valueOf(user.getNickname()), String.valueOf(goodsId));
+            String redisMr = CommonMethod.getMiaoshaOrderRedisKey(String.valueOf(user.getId()), String.valueOf(goodsId));
             //查询用户秒杀商品订单是否创建成功
             Object order = redisService.get(redisMr, OrderInfo.class);
             //秒杀成功
